@@ -29,7 +29,7 @@ export default defineConfig({
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    headless: false, // This runs the browser in headed mode
+    headless: true, // This runs the browser in headed mode
     /* Base URL to use in actions like `await page.goto('/')`. */
      baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
     viewport: { width: 1280, height: 720 },
