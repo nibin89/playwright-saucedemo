@@ -17,4 +17,4 @@ End-to-end test automation project using [Playwright](https://playwright.dev) wi
 
 ## 📁 Project Structure
 
-
+ ├── pages/ # Page Objects ├── tests/ # Test specs ├── utils/ # Test data or helpers ├── .github/workflows/ # CI config ├── .env.dev # Environment config ├── playwright.config.ts # Playwright config
