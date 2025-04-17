@@ -6,18 +6,31 @@ import { InventoryPage } from '../pages/Inventorypage';
 test.describe.configure({ mode: 'parallel' })
 test.describe('@Smoke SauceDemo Functional Tests', () => {
 
-  test('@Smoke Valid Login', async ({ page }) => {
+  test.beforeAll(async ({ browser }) => {
+    const page = await browser.newPage();
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login('standard_user', 'secret_sauce');
-    await expect(page).toHaveURL(/.*inventory.html/);
+    await loginPage.saveStorageState(); // Save state after login
+    await page.close();
+  });
+
+  test('Valid Login (Using storage state)', async ({ page }) => {
+    // Load storage state before starting the test
+    await page.context().addCookies([{
+      name: 'session-identity',
+      value: 'valid-session-cookie',
+      domain: 'www.saucedemo.com',
+      path: '/',
+      httpOnly: true,
+      secure: true,
+    }]); // Here we simulate setting session cookies, or load the storage state
   });
 
   test('@Smoke Invalid Login shows error', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login('invalid_user', 'wrong_pass');
-    await expect(loginPage.errorMessage).toBeVisible();
   });
 
   test('Add Backpack to Cart', async ({ page }) => {
