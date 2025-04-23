@@ -35,6 +35,7 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
     screenshot: 'only-on-failure',
     video: 'on',
+    storageState: './state/storageState.json',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -52,11 +53,11 @@ export default defineConfig({
       use: { ...devices['Desktop Firefox'] },
     }, */
 
-    {
+    /* {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-
+ */
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

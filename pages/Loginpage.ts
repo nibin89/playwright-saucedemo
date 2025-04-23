@@ -1,24 +1,29 @@
 // pages/LoginPage.ts
 import { Page } from '@playwright/test';
+import { InteractionHelper } from '../utils/interactionHelper';
 
 export class LoginPage {
-  constructor(private page: Page) {}
+  private username;
+  private password;
+  readonly loginButton;
+
+  constructor(private page: Page) {
+    this.username = this.page.locator('#user-name');
+    this.password = this.page.locator('#password');
+    this.loginButton = this.page.locator('#login-button');
+  }
 
   async goto() {
-    await this.page.goto('https://www.saucedemo.com/');
+    await InteractionHelper.safeGoto(this.page, 'https://www.saucedemo.com/', 'Login Page');
   }
 
-  async login(username: string, password: string) {
-    await this.page.fill('#user-name', username);
-    await this.page.fill('#password', password);
-    await this.page.click('#login-button');
+  async login(user: string, pass: string) {
+    await InteractionHelper.safeFill(this.page, this.username, user, 'Username');
+    await InteractionHelper.safeFill(this.page, this.password, pass, 'Password');
+    await InteractionHelper.safeClick(this.page, this.loginButton, 'Login Button');
   }
 
-  get errorMessage() {
-    return this.page.locator('[data-test="error"]');
-  }
-
-  get loginButton() {
-    return this.page.locator('#login-button');
+  async saveStorageState() {
+    await this.page.context().storageState({ path: './state/storageState.json' });
   }
 }

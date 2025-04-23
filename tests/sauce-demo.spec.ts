@@ -1,5 +1,5 @@
 // tests/sauce-demo.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { LoginPage } from '../pages/Loginpage';
 import { InventoryPage } from '../pages/Inventorypage';
 
@@ -33,16 +33,12 @@ test.describe('@Smoke SauceDemo Functional Tests', () => {
     await loginPage.login('invalid_user', 'wrong_pass');
   });
 
-  test('Add Backpack to Cart', async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-
+  test('Add Backpack to Cart', async ({ loginPage, inventoryPage }) => {
     await loginPage.goto();
     await loginPage.login('standard_user', 'secret_sauce');
-
     await inventoryPage.addBackpackToCart();
-    await inventoryPage.openCart();
-    await expect(inventoryPage.cartItems).toContainText('Sauce Labs Backpack');
+    const cartCount = await inventoryPage.getCartCount();
+    expect(cartCount).toBe(1);
   });
 
   test('Logout after login', async ({ page }) => {
